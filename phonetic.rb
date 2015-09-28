@@ -34,27 +34,29 @@ class Phonetic
 
   # Translate a word to its phonetic alphabet equivalent
   def self.to_phonetic(word)
+    phoneticWords = ''
     word.each_char do |letter|
       Letters.each do |(alpha,phonetic)|
         if letter == alpha
-          print "#{phonetic} "
+          phoneticWords.concat("#{phonetic} ")
         end
       end
     end
-    puts ''
+    return phoneticWords
   end
 
   # Translate a sequence of phonetic alphabet code words
   # to their alphabetic equivalent
   def self.from_phonetic(str)
+    alphabeticWords = ''
     str.split(' ').each do |word|
       Letters.each do |(alpha,phonetic)|
         if word == phonetic
-          print alpha
+          alphabeticWords.concat(alpha)
         end
       end
     end
-    puts ''
+    return alphabeticWords
   end
 
   # If the line starts with A2P, call to_phonetic on the rest of the substring
@@ -65,11 +67,17 @@ class Phonetic
     if line.start_with?('QUIT')
       exit
     elsif line.start_with?('P2A')
+      # Removes the 'P2A ' from the beginning of the line
       line[0..3] = ''
-      from_phonetic(line)
+
+      print from_phonetic(line)
+      puts ''
     elsif line.start_with?('A2P')
+      # Removes the 'A2P ' from the beginning of the line
       line[0..3] = ''
-      to_phonetic(line)
+
+      print to_phonetic(line)
+      puts ''
     else puts 'Unknown command. Try "P2A" or "A2P"'
     end
   end
